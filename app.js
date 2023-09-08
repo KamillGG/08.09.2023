@@ -50,33 +50,16 @@ function displayNames(json){
 var licznik = 0
 var tab = []
 function check(id){
-    var af
-    var eu
-    var as
-    var am
-    var oc
     if(document.getElementById(id).checked == true){
         licznik++
         tab.push(id)
         console.log(id)
     }
     else{
+        tab = tab.filter(function(el){
+            return el !=id
+        })
         licznik--
-    }
-    if(document.getElementById("Africa").checked == true){
-        af = true
-    }
-    if(document.getElementById("Europe").checked == true){
-        eu = true
-    }
-    if(document.getElementById("Americas").checked == true){
-        am = true
-    }
-    if(document.getElementById("Asia").checked == true){
-        as = true
-    }
-    if(document.getElementById("Oceania").checked == true){
-        oc = true
     }
     for(var i=0;i<=json.length-1;i++){
         var isIt = false
@@ -87,9 +70,33 @@ function check(id){
             }
         }
         console.log(isIt)
-        if(isIt==true){
-            document.getElementsByClassName('divs')[i].setAttribute('hidden','hidden')
+        if(isIt!=true && licznik !=0){
+            document.getElementsByClassName('divs')[i].style.display = "none"
+        }
+        else{
+            document.getElementsByClassName('divs')[i].style.display = "grid"
         }
     }
     console.log(licznik)
+}
+var inputText
+function search(){
+    inputText = document.getElementById('search').value
+    console.log(inputText)
+    for(var i=0;i<=json.length-1;i++){
+        var isthat = false
+        for(var j=0;j<=tab.length;j++){
+            
+            if(json[i].name.common.toLowerCase().includes(inputText.toLowerCase())&& json[i].region==tab[j]){
+                isthat = true
+            }
+            
+        }
+        if(isthat==false){
+            document.getElementsByClassName('divs')[i].style.display = "none"
+        }
+        else{
+            document.getElementsByClassName('divs')[i].style.display = "grid"
+        }
+    }
 }

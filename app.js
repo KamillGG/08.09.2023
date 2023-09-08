@@ -17,6 +17,25 @@ function displayNames(json){
         div.style.gridTemplateAreas = `"flaga nazwa nazwa" "flaga populacja stolica"`
         div.style.width = "400px"
         div.style.height = "100px"
+        div.addEventListener('mouseenter',()=>{
+            const moreInfo = document.createElement('div')
+            moreInfo.id = "moreInfo"
+            moreInfo.innerHTML = "pozdrawiam"
+            document.getElementById('main').appendChild(moreInfo)
+            window.addEventListener('scroll', function() {
+                var centeredDiv = document.getElementById('moreInfo');
+                var scrollY = window.scrollY;
+                var windowHeight = window.innerHeight;
+                var divHeight = centeredDiv.clientHeight;
+            
+                var topOffset = (windowHeight - divHeight) / 2;
+            
+                centeredDiv.style.top = (scrollY + topOffset) + 'px';
+              });
+        })
+        div.addEventListener('mouseleave',()=>{
+            document.getElementById("moreInfo").remove()
+        })
         document.getElementById("main").appendChild(div)
         //flaga
         const flag = document.createElement('img')

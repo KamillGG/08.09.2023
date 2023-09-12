@@ -17,21 +17,22 @@ function displayNames(json){
         div.style.gridTemplateAreas = `"flaga nazwa nazwa" "flaga populacja stolica"`
         div.style.width = "400px"
         div.style.height = "100px"
+        div.id = i
         div.addEventListener('mouseenter',()=>{
             const moreInfo = document.createElement('div')
             moreInfo.id = "moreInfo"
-            moreInfo.innerHTML = "pozdrawiam"
             document.getElementById('main').appendChild(moreInfo)
-            window.addEventListener('scroll', function() {
-                var centeredDiv = document.getElementById('moreInfo');
-                var scrollY = window.scrollY;
-                var windowHeight = window.innerHeight;
-                var divHeight = centeredDiv.clientHeight;
-            
-                var topOffset = (windowHeight - divHeight) / 2;
-            
-                centeredDiv.style.top = (scrollY + topOffset) + 'px';
-              });
+            const language = document.createElement('h4')
+            language.innerHTML = `Language(s): ${Object.values(json[div.id].languages)}`
+            const polishName = document.createElement('h4')
+            polishName.innerHTML = `Polish Name: ${Object.values(json[div.id].translations.pol)}`
+            const subRegion = document.createElement('h4')
+            subRegion.innerHTML = `Subregion: ${json[div.id].subregion}`
+            console.log(Object.values(json[div.id].languages))
+            console.log(div.id)
+            moreInfo.appendChild(subRegion)
+            moreInfo.appendChild(polishName)
+            moreInfo.appendChild(language)
         })
         div.addEventListener('mouseleave',()=>{
             document.getElementById("moreInfo").remove()
@@ -97,25 +98,40 @@ function check(id){
         }
     }
     console.log(licznik)
+    search()
 }
 var inputText
 function search(){
     inputText = document.getElementById('search').value
     console.log(inputText)
     for(var i=0;i<=json.length-1;i++){
-        var isthat = false
-        for(var j=0;j<=tab.length;j++){
-            
-            if(json[i].name.common.toLowerCase().includes(inputText.toLowerCase())&& json[i].region==tab[j]){
-                isthat = true
-            }
-            
-        }
-        if(isthat==false){
-            document.getElementsByClassName('divs')[i].style.display = "none"
-        }
-        else{
+        if(inputText.length==0 && licznik==0){
             document.getElementsByClassName('divs')[i].style.display = "grid"
         }
+        else if(inputText.length!=0 && licznik==0){
+            if(json[i].name.common.toLowerCase().includes(inputText.toLowerCase())){
+                document.getElementsByClassName('divs')[i].style.display = "grid"
+            }
+            else{
+                document.getElementsByClassName('divs')[i].style.display = "none"
+            }
+        }
+        else{
+            var isthat = false
+            for(var j=0;j<=tab.length;j++){
+                
+                if(json[i].name.common.toLowerCase().includes(inputText.toLowerCase())&& json[i].region==tab[j]){
+                    isthat = true
+                }
+                
+            }
+            if(isthat==false){
+                document.getElementsByClassName('divs')[i].style.display = "none"
+            }
+            else{
+                document.getElementsByClassName('divs')[i].style.display = "grid"
+            }
+        }
+        
     }
 }
